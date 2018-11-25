@@ -29,19 +29,42 @@ namespace addressbook_test_autoit
             return list;
         }
 
-        public void RemoveGroup(int v)
+        public bool IsGroupPresent()
+        {
+            OpenGroupsDialog();
+            string f = aux.ControlTreeView(GROUPWINTITLE, "", "WindowsForms10.SysTreeView32.app.0.2c908d51", "Exist", "#0|#1", "");
+            if (f == "1")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+        public void RemoveGroup()
         {
             OpenGroupsDialog();
 
-            aux.ControlTreeView(GROUPWINTITLE, "", "WindowsForms10.SysTreeView32.app.0.2c908d51", "Select", "#2", "");
+            aux.ControlTreeView(GROUPWINTITLE, "", "WindowsForms10.SysTreeView32.app.0.2c908d51", "Select", "#0|#0", "");
             aux.ControlClick(GROUPWINTITLE, "", "WindowsForms10.BUTTON.app.0.2c908d51");
-            SubmitGroupRemove();
+            aux.WinWait("Delete group", "");
+            aux.WinActive("Delete group", "");
+            aux.WinActivate("Delete group", "");
+            //aux.Send("{ENTER}");
 
+            //не нажимается
+            SubmitGroupRemove();
+            aux.WinActive(GROUPWINTITLE, "");
+            aux.WinActivate(GROUPWINTITLE, "");
+            CloseGroupsDialog();
         }
 
         private void SubmitGroupRemove()
         {
-            aux.ControlClick(GROUPWINTITLE, "", "WindowsForms10.BUTTON.app.0.2c908d53");
+            aux.ControlClick("Delete group", "", "WindowsForms10.BUTTON.app.0.2c908d53");
         }
 
         public void Add(GroupData newGroup)

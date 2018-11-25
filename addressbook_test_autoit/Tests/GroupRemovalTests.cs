@@ -10,20 +10,26 @@ namespace addressbook_test_autoit
         [Test]
         public void GroupRemovalTest()
         {
-            List<GroupData> oldGroups = app.Groups.GetGroupList();
+
             GroupData newGroup = new GroupData()
             {
-                Name = "TestGroup"
+                Name = "Группа Подхвата"
             };
 
-            app.Groups.RemoveGroup(0);
+            if (!app.Groups.IsGroupPresent())
+            {
+                app.Groups.Add(newGroup);
+            }
+            List<GroupData> oldGroups = app.Groups.GetGroupList();
+
+            app.Groups.RemoveGroup();
 
             List<GroupData> newGroups = app.Groups.GetGroupList();
             oldGroups.RemoveAt(0);
             oldGroups.Sort();
             newGroups.Sort();
 
-            Assert.AreEqual(oldGroups, newGroups);
+            Assert.AreEqual(oldGroups , newGroups);
         }
     }
 }
